@@ -6,6 +6,12 @@
   var UNDOLOG_FILENAME = 'PPXUNDO.LOG';
   var fso;
   var fo = {};
+  fo.exist = function (entry) {
+    fso = fso || PPx.CreateObject('Scripting.FileSystemObject');
+    if (fso.FolderExists(entry)) return 'Folder';
+    if (fso.FileExists(entry)) return 'File';
+    return false;
+  };
   fo.pairedWindow = function (path) {
     var fileInfo = PPx.GetFileInformation(path);
     var reg = /^aux:.*/;
@@ -43,9 +49,7 @@
       ]
     }[dirtype];
     if (typeof d === 'undefined') {
-      if (typeof ppm_test_run !== 'undefined') {
-        return d;
-      }
+      if (typeof ppm_test_run !== 'undefined') return d;
       PPx.Echo(dirtype + ' cannot be specified as the destination');
       PPx.Quit(-1);
     }
@@ -60,9 +64,7 @@
     return callback('C', '*ppcfile ' + cmd.act + ',' + cmd.dest + ',' + cmd.opt + ' ' + cmd.post);
   };
   fo.imcompatible = function (dirtype, msg) {
-    if (dirtype !== ':XLF') {
-      return;
-    }
+    if (dirtype !== ':XLF') return;
     PPx.echo(msg);
     PPx.Quit(1);
   };
@@ -77,9 +79,7 @@
     } else if (fso.FileExists(pwd + cal[1])) {
       dll = cal[1];
     } else {
-      if (typeof ppm_test_run !== 'undefined') {
-        return errormsg;
-      }
+      if (typeof ppm_test_run !== 'undefined') return errormsg;
       PPx.Echo(errormsg);
       PPx.Quit(1);
     }

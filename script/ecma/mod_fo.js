@@ -4,8 +4,14 @@
     typeof ppm_test_run === 'undefined' && PPx.Quit(1);
   }
   const UNDOLOG_FILENAME = 'PPXUNDO.LOG';
-  const fo = {};
   let fso;
+  const fo = {};
+  fo.exist = (entry) => {
+    fso = fso || PPx.CreateObject('Scripting.FileSystemObject');
+    if (fso.FolderExists(entry)) return 'Folder';
+    if (fso.FileExists(entry)) return 'File';
+    return false;
+  };
   fo.pairedWindow = (path) => {
     const fileInfo = PPx.GetFileInformation(path);
     const reg = /^aux:.*/;

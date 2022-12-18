@@ -13,7 +13,7 @@
 'use strict';
 
 const NL_CHAR = '\r\n';
-const LIMIT_FILE_SIZE = 5000000;
+const LIMIT_FILE_SIZE = 3000000;
 const LIMIT_SUB_DIRECTORIES = 30;
 
 /* Initial */

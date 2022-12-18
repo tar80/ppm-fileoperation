@@ -11,6 +11,8 @@
  */
 
 var NL_CHAR = '\r\n';
+var LIMIT_FILE_SIZE = 3000000;
+var LIMIT_SUB_DIRECTORIES = 30;
 
 /* Initial */
 // Read module
