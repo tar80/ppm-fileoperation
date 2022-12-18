@@ -125,25 +125,82 @@ var sym_link = function (dest, marked) {
   return fo.symlink(prefixOpt, cmdline);
 };
 
-var fast_copy = function (confirm, paths, send, dest, same) {
-  var cmd = confirm == 0 ? '%Oq fastcopy.exe /no_exec' : '%%Obdq fcp.exe';
+var check_async = function () {
+  var vbs = '%*getcust(S_ppm#global:ppm)\\lib\\vbs\\entries_count.vbs';
+  var file_size = 0;
+  var dir_count = 0;
 
-  return util.execute(
-    '_',
-    '*cd ' +
-      paths.parent +
-      '%%:' +
-      cmd +
-      ' /cmd=' +
-      same +
-      ' /force_start=2 /verify /error_stop /log=false /filelog=' +
-      paths.log +
-      ' /postproc=false ' +
-      send.join(' ') +
-      ' /to=' +
-      dest +
-      '%%\\%%&'
-  );
+  var markCount = Math.max(PPx.EntryMarkCount, 1);
+  var en = PPx.Entry;
+  en.FirstMark;
+
+  for (var i = 0; i < markCount; i++) {
+    var entryAtt = fo.exist(en.Name);
+
+    if (!entryAtt) {
+      continue;
+    }
+
+    var st = fso['Get' + entryAtt](en.Name);
+    file_size = file_size + st.size;
+
+    if (file_size > LIMIT_FILE_SIZE) {
+      return 2;
+    }
+
+    if (entryAtt === 'Folder') {
+      dir_count = PPx.Extract(
+        '%*script(' + vbs + ',' + en.Name + ',dir,' + LIMIT_SUB_DIRECTORIES + ')'
+      );
+
+      if (dir_count >= LIMIT_SUB_DIRECTORIES) {
+        return 2;
+      }
+    }
+
+    en.NextMark;
+  }
+
+  return 1;
+};
+
+var fast_copy = function (confirm, paths, send, dest, same) {
+  if (confirm !== 0) {
+    confirm = check_async();
+  }
+
+  var options =
+    ' /cmd=' + same + ' /force_start=2 /verify /error_stop /log=false /filelog=' + paths.log +
+    ' /postproc=false ' + send.join(' ') + ' /to=' + dest + '%%\\';
+
+  if (confirm == 0) {
+    util.execute(
+      '_',
+      '%%Oq *cd ' + paths.parent + '%%:fastcopy.exe /no_exec /auto_close' + options
+    );
+  } else if (confirm == 2) {
+    util.execute('_', '%%Oq *cd ' + paths.parent + '%%:fastcopy.exe /auto_close' + options);
+    PPx.SetPopLineMessage('Limit: Asynchronous Fastcopy');
+    PPx.Quit(1);
+  } else {
+    if (util.execute('_', '%%Obdq *cd ' + paths.parent + '%%:fcp.exe' + options + '%%&') !== 0) {
+      util.log('Error: FastCopy did not work');
+      PPx.Quit(1);
+    }
+  }
+
+  try {
+    var ts = fso.OpentextFile(fc.log, 1, -1);
+    var logLines = ts.ReadAll().split(NL_CHAR);
+    var fcErr = logLines[logLines.length - 3]
+      .replace(/^Result\s\D+(\d+)\D+(\d+).+/, '$1,$2')
+      .split(',');
+    ts.Close();
+
+    util.log('FastCopy Error: ' + (Number(fcErr[0]) + Number(fcErr[1])));
+  } catch (err) {
+    util.log('Error: FastCopy result not found.');
+  }
 };
 
 // Execute Copy command
@@ -165,23 +222,7 @@ if (g_args.proc >= 2) {
   // for Regular
   if (g_args.useFC !== 0 && paired_win.ext === ':DIR') {
     var fc = fo.fastcopy();
-    if (fast_copy(g_args.proc, fc, entries.paths, paired_win.path, g_args.same.fc) !== 0) {
-      util.log('Error: FastCopy did not work');
-      PPx.Quit(1);
-    }
-
-    try {
-      var ts = fso.OpentextFile(fc.log, 1, -1);
-      var logLines = ts.ReadAll().split(NL_CHAR);
-      var fcErr = logLines[logLines.length - 3]
-        .replace(/^Result\s\D+(\d+)\D+(\d+).+/, '$1,$2')
-        .split(',');
-      ts.Close();
-
-      util.log('FastCopy Error: ' + (Number(fcErr[0]) + Number(fcErr[1])));
-    } catch (err) {
-      util.log('Error: FastCopy result not found.');
-    }
+    fast_copy(g_args.proc, fc, entries.paths, paired_win.path, g_args.same.fc);
   } else {
     fo.run(copy, util.execute);
   }

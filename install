@@ -1,10 +1,10 @@
 ﻿PPM_PLUGIN_NAME=ppm-fileoperation
 
 #Plugin version
-VERSION=1.0
+VERSION=1.1
 
 #Requires ppm version
-PPM_VERSION=0.87
+PPM_VERSION=0.88
 
 #Requires PPx version
 PPX_VERSION=186
@@ -19,7 +19,7 @@ EXECUTABLES=
 MODULES=7-zip
 
 #Comma separated dependent plugins. Just a note
-DEPENDENCIES=fcp.exe(fastcopy_cui)
+DEPENDENCIES=fastcopy.exe,fcp.exe
 
 #CodeType permisson. 0:No restriction | 1:Not use multiByte | 2:Not use unicode
 CODETYPE_PERMISSION=1
