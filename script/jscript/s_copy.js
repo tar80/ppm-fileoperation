@@ -192,7 +192,7 @@ var fast_copy = function (confirm, paths, send, dest, same) {
   }
 
   try {
-    var ts = fso.OpentextFile(fc.log, 1, -1);
+    var ts = fso.OpentextFile(paths.log, 1, -1);
     var logLines = ts.ReadAll().split(NL_CHAR);
     var fcErr = logLines[logLines.length - 3]
       .replace(/^Result\s\D+(\d+)\D+(\d+).+/, '$1,$2')
