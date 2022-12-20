@@ -187,7 +187,6 @@ const fast_copy = (confirm, paths, send, dest, same) => {
     }
   }
 
-  PPx.Echo(paths.log);
   try {
     const ts = fso.OpentextFile(paths.log, 1, -1);
     const logLines = ts.ReadAll().split(NL_CHAR);
