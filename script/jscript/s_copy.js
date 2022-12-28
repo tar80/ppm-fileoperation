@@ -128,7 +128,7 @@ var sym_link = function (dest, marked) {
 };
 
 var check_async = function () {
-  var vbs = '%*getcust(S_ppm#global:ppm)\\lib\\vbs\\entries_count.vbs';
+  var vbs = '%*getcust(S_ppm#global:ppm)\\lib\\vbs\\count_entries.vbs';
   var file_size = 0;
   var dir_count = 0;
 

@@ -129,7 +129,7 @@ const sym_link = (dest, marked) => {
 };
 
 const check_async = () => {
-  const vbs = '%*getcust(S_ppm#global:ppm)\\lib\\vbs\\entries_count.vbs';
+  const vbs = '%*getcust(S_ppm#global:ppm)\\lib\\vbs\\count_entries.vbs';
   let file_size = 0;
   let dir_count = 0;
 
