@@ -95,7 +95,8 @@
     var skip = this.skip ? format(this.skip, ' / Skip') : '';
     var error = this.error ? format(this.error, ' / Error') : '';
     var pass = this.pass ? format(this.pass, ' / Pass') : '';
-    return success + skip + error + pass;
+    var total = this.total ? format(this.total, ' / Total') : '';
+    return success + skip + error + pass + total;
   };
   fo.pairedUpdate = function () {
     PPx.Execute('*execute ~,*jumppath -update -savelocate');

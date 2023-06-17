@@ -173,7 +173,8 @@ function filesystem_move() {
     success: success_count,
     skip: skip_count,
     error: error_count,
-    pass: pass_count
+    pass: pass_count,
+    total: markCount
   });
   util.log(logs);
 

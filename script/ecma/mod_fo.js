@@ -94,7 +94,8 @@
     const skip = this.skip ? format(this.skip, ' / Skip') : '';
     const error = this.error ? format(this.error, ' / Error') : '';
     const pass = this.pass ? format(this.pass, ' / Pass') : '';
-    return `${success}${skip}${error}${pass}`;
+    const total = this.total ? format(this.total, ' / Total') : '';
+    return `${success}${skip}${error}${pass}${total}`;
   };
   fo.pairedUpdate = () => PPx.Execute('*execute ~,*jumppath -update -savelocate');
   fo.postproc = (update, callback) =>

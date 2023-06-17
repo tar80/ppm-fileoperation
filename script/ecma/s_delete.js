@@ -122,7 +122,8 @@ const logs = fo.resultlog.call({
   cmd: 'SafeDel',
   success: success_count,
   skip: skip_count,
-  error: error_count
+  error: error_count,
+  total: markCount
 });
 util.log(logs);
 
