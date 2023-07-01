@@ -16,7 +16,7 @@ var module = function (filepath) {
   st.Type = 2;
   st.Charset = 'UTF-8';
   st.LoadFromFile(filepath);
-  const data = st.ReadText(-1);
+  var data = st.ReadText(-1);
   st.Close;
 
   return Function(' return ' + data)();
@@ -108,7 +108,7 @@ var assort_entry = function (filename) {
 };
 
 var to_temp_name = function (entry) {
-  var name = `${entry.name}_ren_${entry.ext}`;
+  var name = entry.name + '_ren_' + entry.ext;
 
   while (fso.FileExists(name) || fso.FolderExists(name)) {
     name = name.replace('_ren_', '__ren__');
@@ -142,10 +142,10 @@ if (mark_count === 2) {
 
   var tempName = to_temp_name(entry1);
 
-  util.extract(
+  util.execute(
     'C',
-      '*rename ' + entry1.filename + ',' + tempName + '%:' +
-      '*rename ' + entry2.filename + ',' + renamed2 + '%:' +
+      '*rename ' + entry1.filename + ',' + tempName + '%%:' +
+      '*rename ' + entry2.filename + ',' + renamed2 + '%%:' +
       '*rename ' + tempName + ',' + renamed1
   ) && PPx.Quit(-1);
 
@@ -159,7 +159,7 @@ if (mark_count === 2) {
   check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
   confirm_msg(mes.window, entry1.filename, entry2.filename);
 
-  util.extract(
+  util.execute(
     'C',
       '*rename ' + entry1.filename + ',' + renamed1 + '%:' +
       '*rename ' + entry2.filename + ',' + renamed2 + '%:' +
