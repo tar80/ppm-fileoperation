@@ -1,4 +1,4 @@
-﻿//!*script
+//!*script
 /**
  * Move files to suit the situation
  *

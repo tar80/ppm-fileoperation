@@ -10,7 +10,7 @@ PPM_VERSION=0.88
 PPX_VERSION=186
 
 #Requires PPx Script Module version
-SCRIPT_VERSION=18
+SCRIPT_VERSION=19
 
 #Requires external executables. Separated dy commas
 EXECUTABLES=
@@ -19,7 +19,7 @@ EXECUTABLES=
 MODULES=7-zip
 
 #Comma separated dependent plugins. Just a note
-DEPENDENCIES=fastcopy.exe,fcp.exe
+DEPENDENCIES=fastcopy.exe, fcp.exe, reces.exe
 
 #CodeType permisson. 0:No restriction | 1:Not use multiByte | 2:Not use unicode
 CODETYPE_PERMISSION=1
