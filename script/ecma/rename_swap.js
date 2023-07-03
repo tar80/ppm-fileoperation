@@ -98,8 +98,8 @@ const check_exceptions = (e1, e2, r1, r2) => {
 };
 
 const assort_entry = (filename) => {
-  const name = util.extract('C', `%*name(XN,"${filename}")`);
-  let ext = util.extract('C', `%*name(T,"${filename}")`);
+  const name = util.extract('C', `%%*name(XN,""${filename}"")`);
+  let ext = util.extract('C', `%%*name(T,""${filename}"")`);
   ext = ext ? `.${ext}` : '';
 
   return {

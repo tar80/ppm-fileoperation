@@ -96,8 +96,8 @@ var check_exceptions = function (e1, e2, r1, r2) {
 };
 
 var assort_entry = function (filename) {
-  var name = util.extract('C', '%*name(XN,"' + filename + '")');
-  var ext = util.extract('C', '%*name(T,"' + filename + '")');
+  var name = util.extract('C', '%%*name(XN,""' + filename + '"")');
+  var ext = util.extract('C', '%%*name(T,""' + filename + '"")');
   ext = ext ? '.' + ext : '';
 
   return {
