@@ -71,7 +71,7 @@ const mes = {
 const fso = PPx.CreateObject('Scripting.FileSystemObject');
 
 const confirm_msg = (message, e1, e2) => {
-  !util.interactive(TITLE, `${message}${NL_CHAR}${NL_CHAR}${e1}${NL_CHAR}${e2}`) && PPx.Quit(-1);
+  return util.interactive(TITLE, `${message}${NL_CHAR}${NL_CHAR}${e1}${NL_CHAR}${e2}`);
 };
 
 const check_exceptions = (e1, e2, r1, r2) => {
@@ -79,7 +79,7 @@ const check_exceptions = (e1, e2, r1, r2) => {
 
   for (let i = 2; i--; ) {
     if (fso.FileExists(renamed[i]) && ![e1, e2].includes(renamed[i])) {
-      util.quitMsg(mes.same, '', renamed[i]);
+      return [mes.same, '', renamed[i]];
     }
   }
 
@@ -89,11 +89,11 @@ const check_exceptions = (e1, e2, r1, r2) => {
   const e2notExist = !e2isDir && !fso.FileExists(e2);
 
   if (e1notExist || e2notExist) {
-    util.quitMsg(mes.notexist);
+    return [mes.notexist];
   }
 
   if (e1isDir !== e2isDir) {
-    util.quitMsg(mes.diffatt);
+    return [mes.diffatt];
   }
 };
 
@@ -132,8 +132,9 @@ if (mark_count === 2) {
     false: [`${entry2.name}${entry1.ext}`, `${entry1.name}${entry2.ext}`, mes.filename]
   }[entry1.name === entry2.name];
 
-  check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
-  confirm_msg(msg, entry1.filename, entry2.filename);
+  const err = check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
+  err !== undefined && util.quitMsg.apply(err);
+  !confirm_msg(msg, entry1.filename, entry2.filename) && PPx.Quit(-1);
 
   const tempName = to_temp_name(entry1);
 
@@ -151,8 +152,9 @@ if (mark_count === 2) {
   const renamed1 = `${util.extract('C', '%FD')}\\${entry2.name}${entry1.ext}`;
   const renamed2 = `${util.extract('C', '%~FD')}\\${entry1.name}${entry2.ext}`;
 
-  check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
-  confirm_msg(mes.window, entry1.filename, entry2.filename);
+  const err = check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
+  err !== undefined && util.quitMsg.apply(err);
+  !confirm_msg(mes.window, entry1.filename, entry2.filename) && PPx.Quit(-1);
 
   util.execute(
     'C',

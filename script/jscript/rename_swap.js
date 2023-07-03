@@ -69,7 +69,7 @@ var mes = {
 var fso = PPx.CreateObject('Scripting.FileSystemObject');
 
 var confirm_msg = function (message, e1, e2) {
-  !util.interactive(TITLE, message + NL_CHAR + NL_CHAR + e1 + NL_CHAR + e2) && PPx.Quit(-1);
+  return util.interactive(TITLE, message + NL_CHAR + NL_CHAR + e1 + NL_CHAR + e2);
 };
 
 var check_exceptions = function (e1, e2, r1, r2) {
@@ -77,7 +77,7 @@ var check_exceptions = function (e1, e2, r1, r2) {
 
   for (var i = 2; i--; ) {
     if (fso.FileExists(renamed[i]) && e1 !== renamed[i] && e2 !== renamed[i]) {
-      util.quitMsg(mes.same, '', renamed[i]);
+      return [mes.same, '', renamed[i]];
     }
   }
 
@@ -87,11 +87,11 @@ var check_exceptions = function (e1, e2, r1, r2) {
   var e2notExist = !e2isDir && !fso.FileExists(e2);
 
   if (e1notExist || e2notExist) {
-    util.quitMsg(mes.notexist);
+    return [mes.notexist];
   }
 
   if (e1isDir !== e2isDir) {
-    util.quitMsg(mes.diffatt);
+    return [mes.diffatt];
   }
 };
 
@@ -137,16 +137,17 @@ if (mark_count === 2) {
     msg = mes.filename;
   }
 
-  check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
-  confirm_msg(msg, entry1.filename, entry2.filename);
+  var err = check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
+  err !== undefined && util.quitMsg.apply(err);
+  !confirm_msg(msg, entry1.filename, entry2.filename) && PPx.Quit(-1);
 
   var tempName = to_temp_name(entry1);
 
   util.execute(
     'C',
-      '*rename ' + entry1.filename + ',' + tempName + '%%:' +
-      '*rename ' + entry2.filename + ',' + renamed2 + '%%:' +
-      '*rename ' + tempName + ',' + renamed1
+    '*rename ' + entry1.filename + ',' + tempName +
+      '%%:' + '*rename ' + entry2.filename + ',' + renamed2 +
+      '%%:' + '*rename ' + tempName + ',' + renamed1
   ) && PPx.Quit(-1);
 
   fo.undologWrite(fo.undologpath(), [], NL_CHAR);
@@ -156,15 +157,16 @@ if (mark_count === 2) {
   var renamed1 = util.extract('C', '%FD') + '\\' + entry2.name + entry1.ext;
   var renamed2 = util.extract('C', '%~FD') + '\\' + entry1.name + entry2.ext;
 
-  check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
-  confirm_msg(mes.window, entry1.filename, entry2.filename);
+  var err = check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
+  err !== undefined && util.quitMsg.apply(err);
+  !confirm_msg(mes.window, entry1.filename, entry2.filename) && PPx.Quit(-1);
 
   util.execute(
     'C',
-      '*rename ' + entry1.filename + ',' + renamed1 + '%:' +
-      '*rename ' + entry2.filename + ',' + renamed2 + '%:' +
-      '%K~"@^F5'
-  ) && PPx.Quit(-1);
+    '*rename ' + entry1.filename + ',' + renamed1 +
+      '%:' + '*rename ' + entry2.filename + ',' + renamed2 +
+      '%:' + '%K~"@^F5'
+  )
 
   var undolog = [
     'Move\t' + entry1.filename,
@@ -175,7 +177,7 @@ if (mark_count === 2) {
 
   fo.undologWrite(fo.undologpath(), undolog, NL_CHAR);
 } else {
-  util.quitMsg.apply(this, mes.desc);
+  typeof ppm_test_run === 'undefined' && util.quitMsg.apply(this, mes.desc);
 }
 
 util.execute('C', '*unmarkentry');
