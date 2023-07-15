@@ -106,7 +106,7 @@ proc['undo'] = () => {
 
   // NOTE:Switching process. If don't do this, REDO will not load.
   PPx.Execute('*wait 0,2');
-  util.extract('_', '*file !undo -src:%%1 -min -nocount -log:off%%:1') !== '1' && PPx.Quit(1);
+  util.extract('_', '*file !undo -min -nocount -log:off%%:1') !== '1' && PPx.Quit(1);
   postCmd && proc.overwrite('redo');
 
   if (util.extract('C', '%%2') !== '') {

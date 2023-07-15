@@ -2,12 +2,12 @@
 /**
  * Move files to suit the situation
  *
- * @arg {number} 0 How the ppcfile command is start. 0=detail | 1=quick
- * @arg {number} 1 If nonzero, use FileSystem MoveFile to regular move. 0=false | 1=true(rename:false) | 2=true(rename:true)
- * @arg {number} 2 If nonzero, MoveFile output message per file
- * @arg {number} 3 If nonzero, update entry-list after the move process is completed
- * @arg {number} 4 If nonzero, target parent directory. Move up files.
- * @arg {number} 5 If nonzero, Specify *ppcfile "-same" option number. default=3(skip)
+ * @arg {number} 0 - How the ppcfile command is start. 0=detail | 1=quick
+ * @arg {number} 1 - If non-zero, use FileSystem MoveFile to regular move. 0=false | 1=true(rename:false) | 2=true(rename:true)
+ * @arg {number} 2 - If non-zero, MoveFile output message per file
+ * @arg {number} 3 - If non-zero, update entry-list after the move process is completed
+ * @arg {number} 4 - If non-zero, target parent directory. Move up files.
+ * @arg {number} 5 - If non-zero, Specify *ppcfile "-same" option number. default=3(skip)
  * NOTE:arg(1) "rename:" means rename to the destination file of same name. If false, skip. On MoveFile.
  */
 
@@ -56,7 +56,7 @@ const g_args = ((args = PPx.Arguments) => {
   };
 })();
 
-const target_path = g_args.upper === 0 ? util.extract('C', '%%2') : util.extract('C', '%%*name(D,""%%1"")');
+const target_path = g_args.upper === 0 ? util.extract('C', '%%2') : util.extract('C', '%%*name(DN,""%%1"")');
 
 /**
  * Paired window details

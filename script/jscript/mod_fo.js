@@ -61,7 +61,7 @@
     return {act: act, dest: cmd.dest, opt: opt + cmd.append, post: cmd.post};
   };
   fo.run = function (cmd, callback) {
-    return callback('C', '*ppcfile ' + cmd.act + ',' + cmd.dest + ',' + cmd.opt + ' ' + cmd.post);
+    return callback('C', '*ppcfile ' + cmd.act + ',"' + cmd.dest + '",' + cmd.opt + ' ' + cmd.post);
   };
   fo.imcompatible = function (dirtype, msg) {
     if (dirtype !== ':XLF') return;

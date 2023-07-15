@@ -2,10 +2,10 @@
 /**
  * Copy entries to multiple paths
  *
- * @arg {number} 0 How the process is started. 0=ppcfile | 1=fastcopy | 2=symlink
- * @arg {number} 1 If nonzero, How to process files with the same name. 0=skip | 1=update | 2=overwrite
- * @arg {string} 2 *ppcfile copy, additional options
- * @arg {string} 3 for symbolic-links. Specify the Scheduler task-name if you use an elevate-PPb
+ * @arg {number} 0 - How the process is started. 0=ppcfile | 1=fastcopy | 2=symlink
+ * @arg {number} 1 - How to process files with the same name. 0=skip | 1=update | 2=overwrite
+ * @arg {string} 2 - *ppcfile copy, additional options
+ * @arg {string} 3 - for symbolic-links. Specify the Scheduler task-name if you use an elevate-PPb
  */
 
 'use strict';
@@ -52,10 +52,10 @@ const copy = ((args = PPx.Arguments()) => {
   const samename = {
     0: {ppc: 3, fc: 'noexist_only'},
     1: {ppc: 0, fc: 'update'},
-    2: {ppx: 2, fc: 'force_copy'}
+    2: {ppc: 2, fc: 'force_copy'}
   }[arr[1]];
 
-  var option = arr[0] === '1' ? samename.fc : `${arr[2]} ${DEFAULT_OPTS} -sameall -same:${samename.ppx}`
+  var option = arr[0] === '1' ? samename.fc : `${arr[2]} ${DEFAULT_OPTS} -sameall -same:${samename.ppc}`
 
   return {
     proc: {0: 'Copy', 1: 'FastCopy', 2: 'Link'}[arr[0]],

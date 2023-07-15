@@ -2,11 +2,11 @@
 /**
  * Copy files to suit the situation
  *
- * @arg {number} 0 How the process is started. 0=detail | 1=quick | 2=confirm(symlink) | 3=quick(symlink)
- * @arg {number} 1 If nonzero, use FastCopy to regular copy
- * @arg {number} 2 If nonzero, How to process files with the same name. 0=skip | 1=update | 2=overwrite
- * @arg {number} 3 If nonzero, update entry-list after the copy process is completed
- * @arg {string} 4 for Symlink. Specify the Scheduler task-name if you use an elevate-PPb
+ * @arg {number} 0 - How the process is started. 0=detail | 1=quick | 2=confirm(symlink) | 3=quick(symlink)
+ * @arg {number} 1 - If non-zero, use FastCopy to regular copy
+ * @arg {number} 2 - If non-zero, How to process files with the same name. 0=skip | 1=update | 2=overwrite
+ * @arg {number} 3 - If non-zero, update entry-list after the copy process is completed
+ * @arg {string} 4 - for Symlink. Specify the Scheduler task-name if you use an elevate-PPb
  * NOTE:arg(1) If you select FastCopy, it is always quick-copy.
  */
 
@@ -172,7 +172,7 @@ const fast_copy = (confirm, paths, send, dest, same) => {
 
   const options =
     ` /cmd=${same} /force_start=2 /verify /error_stop /log=false /filelog=${paths.log}` +
-    ` /postproc=false ${send.join(' ')} /to=${dest}%%\\`;
+    ` /postproc=false ${send.join(' ')} /to="${dest}%%\\"`;
 
   if (confirm == 0) {
     util.execute('_', `%%Oq *cd ${paths.parent}%%:fastcopy.exe /no_exec /auto_close ${options}`);

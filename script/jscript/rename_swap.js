@@ -154,8 +154,8 @@ if (mark_count === 2) {
 } else if (PPx.Pane.Count > 1 && mark_count < 2) {
   var entry1 = assort_entry(util.extract('C', '%FDCN'));
   var entry2 = assort_entry(util.extract('C', '%~FDCN'));
-  var renamed1 = util.extract('C', '%FD') + '\\' + entry2.name + entry1.ext;
-  var renamed2 = util.extract('C', '%~FD') + '\\' + entry1.name + entry2.ext;
+  var renamed1 = util.extract('C', '%1') + '\\' + entry2.name + entry1.ext;
+  var renamed2 = util.extract('C', '%2') + '\\' + entry1.name + entry2.ext;
 
   var err = check_exceptions(entry1.filename, entry2.filename, renamed1, renamed2);
   err !== undefined && util.quitMsg.apply(err);

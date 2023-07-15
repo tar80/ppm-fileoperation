@@ -2,10 +2,10 @@
 /**
  * Copy entries to multiple paths
  *
- * @arg {number} 0 How the process is started. 0=ppcfile | 1=fastcopy | 2=symlink
- * @arg {number} 1 If nonzero, How to process files with the same name. 0=skip | 1=update | 2=overwrite
- * @arg {string} 2 *ppcfile copy, additional options
- * @arg {string} 3 for symbolic-links. Specify the Scheduler task-name if you use an elevate-PPb
+ * @arg {number} 0 - How the process is started. 0=ppcfile | 1=fastcopy | 2=symlink
+ * @arg {number} 1 - How to process files with the same name. 0=skip | 1=update | 2=overwrite
+ * @arg {string} 2 - *ppcfile copy, additional options
+ * @arg {string} 3 - for symbolic-links. Specify the Scheduler task-name if you use an elevate-PPb
  */
 
 var NL_CHAR = '\r\n';

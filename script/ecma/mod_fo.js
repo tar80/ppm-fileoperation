@@ -49,7 +49,7 @@
       ]
     }[dirtype];
     if (typeof d === 'undefined') {
-      if (ppm_test_run !== undefined) return d;
+      if (typeof ppm_test_run !== 'undefined') return d;
       PPx.Echo(dirtype + ' cannot be specified as the destination');
       PPx.Quit(-1);
     }
@@ -61,7 +61,7 @@
     return {act: act, dest: cmd.dest, opt: opt + cmd.append, post: cmd.post};
   };
   fo.run = (cmd, callback) =>
-    callback('C', `*ppcfile ${cmd.act},${cmd.dest},${cmd.opt} ${cmd.post}`);
+    callback('C', `*ppcfile ${cmd.act},"${cmd.dest}",${cmd.opt} ${cmd.post}`);
   fo.imcompatible = (dirtype, msg) => {
     if (dirtype !== ':XLF') return;
     PPx.echo(msg);
@@ -78,7 +78,7 @@
     } else if (fso.FileExists(pwd + cal[1])) {
       dll = cal[1];
     } else {
-      if (ppm_test_run !== undefined) return errormsg;
+      if (typeof ppm_test_run !== 'undefined') return errormsg;
       PPx.Echo(errormsg);
       PPx.Quit(1);
     }
