@@ -1,13 +1,13 @@
 ﻿PPM_PLUGIN_NAME=ppm-fileoperation
 
 #Plugin version
-VERSION=1.7
+VERSION=1.8
 
 #Requires ppm version
 PPM_VERSION=0.91
 
 #Requires PPx version
-PPX_VERSION=186
+PPX_VERSION=191
 
 #Requires PPx Script Module version
 SCRIPT_VERSION=19
