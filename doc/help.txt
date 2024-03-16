@@ -1,22 +1,22 @@
-File Operation
+File Operations
 
 Author: tar80 <tar80master@google.com>
 License: MIT License
 Repository: https://github.com/tar80/ppm-fileoperation
 ===============================================================================
 
-ファイルの移動・コピー・削除用のメニュー・独自リネーム機能を設定します。
+ファイルの移動・コピー・削除用のメニューと独自リネーム機能を設定します。
 ファイル移動・コピーでは送り先の属性に応じて対象パス・オプションを変更します。
 また複数のパスに一括してファイルをコピー・削除する機能などがあります。
 
-移動・削除にはFileSystem、コピーにはcui版FastCopyを指定することもできます。
-これらは*ppcfileを経由しないため小窓がでませんが、別スレッドではないので
-ファイル操作中はロックされます。対象が書庫・リストファイルであったりパス確認が
-必要な場合は*ppcfileを実行します。移動・削除はUNDOに対応しています。
+移動・削除にはFileSystem、コピーにはFastCopyを指定することもできます。
+FileSystemは*ppcfileを経由しないため小窓がでませんが、別スレッドではないため
+ファイル操作中はロックされます。送り先が別ドライブ・仮想パスなど、FileSystemで
+対応できない場合は*ppcfileを実行します。移動・削除はUNDOに対応しています。
 
 Windowsではシンボリックリンクの作成には権限が必要になります。
-グループポリシーエディターが使えるPC(Professional Edition以上)なら比較的簡単に
-権限を変更できますが、使えないPCでは少し面倒なようです。このプラグインでは
+(windows10の場合)グループポリシーエディターが使えるPCなら比較的簡単に権限を
+変更できますが使えないPCでは少し面倒なようです。このプラグインでは
 管理者権限PPb(https://tar80.github.io/pages-pca/ppb/highest_ppb.html)を使用して
 UAC認証ダイアログを回避する方法をサポートしています。
 
@@ -31,21 +31,26 @@ UAC認証ダイアログを回避する方法をサポートしています。
 ===============================================================================
 構成ファイルの説明
 
-	script\rename_swap.js	2ファイル間で名前を入れ替え
-	script\s_mov.js	ファイル移動
-	script\s_copy.js	ファイルコピー
-	script\s_delete.js	ファイル削除
-	script\s_undo.js	Undo/Redo
-	script\multi_copy.js	マルチコピー
-	script\multi_delete.js	マルチ削除
-	script\mod_fo.js	ファイル操作モジュール
+	dist\cleanup.js		不要ファイル削除
+	dist\moveFile.js	ファイル移動
+	dist\copyFile.js	ファイルコピー
+	dist\deleteFile.js	ファイル削除
+	dist\resultFastcopy.js	FastCopyの実行時ログを生成
+	dist\undo.js		Undo/Redo
+	dist\multiCopy.js	マルチコピー
+	dist\multiDelete.js	マルチ削除
+	dist\renameSwap.js	2ファイル間で名前を入れ替え
+	sheet\cleanup.txt	不要ファイル削除用のパスリスト
 	sheet\multipath.txt	パス補完候補リスト
 
 ===============================================================================
 テーブル情報
 
+	S_ppm#user:datetime	実行時ログに表示される時刻の形式
+	S_ppm#user:fcdir	FastCopyのインストールディレクトリ
+	S_ppm#user:fcoptions	FastCopyの起動オプション
+	S_ppm#user:fo_options	*ppcfileのオプション
 	S_ppm#user:fo_trash	$deleted(SafeDelete)の親ディレクトリ
-	S_ppm#user:fo_fastcopy	fcp.exeの親ディレクトリ
 	M_ppmMove	移動コマンドメニュー
 	M_ppmCopy	コピーコマンドメニュー
 	M_ppmDelete	削除コマンドメニュー
@@ -68,7 +73,7 @@ UAC認証ダイアログを回避する方法をサポートしています。
 移動・コピー・マルチコピー時、同名ファイルは無視されますが実行時にShiftキーが
 押されていた場合は上書きします。
 	M + M		同名ファイルスキップ
-	M + Shift+M	同名ファイル上書き、ドライブをまたいだファイル操作
+	M + Shift+M	同名ファイル上書き
 
 ===============================================================================
 vim:tw=79:ts=8:sts=0:sw=4:norl:noet:fen:
