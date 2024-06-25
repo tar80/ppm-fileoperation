@@ -1,2 +1,2 @@
-%*getcust(S_ppm#user:fo_trash)%\deleted$,
+%*getcust(S_ppm#user:fo_trash)%\deleted$;
 

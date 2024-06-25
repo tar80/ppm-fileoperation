@@ -423,6 +423,21 @@ const fileOperation = (att: FileOperation, perform: PerformOperation, perlog: bo
   return result.error === 0 && dest.dirtype !== 'NA';
 };
 
+export const ignoreValidTempDir = (): string => {
+  const ppcids = PPx.Extract('%*ppxlist(-C)').split(',');
+  const names: string[] = [];
+
+  for (const id of ppcids) {
+    const name = PPx.Extract(`%*extract(${id},"!%%*name(C,""%%*temp()"")")`);
+
+    if (!names.includes(name)) {
+      names.push(name);
+    }
+  }
+
+  return names.join(';').replace(/\./g,'*');
+};
+
 export const datetime = (): string => {
   if (debug.jestRun()) {
     return '%bttest';
@@ -472,12 +487,12 @@ export const copyFile = {
   updatePairWindow,
   symlinkCmdline,
   symlink,
-  fastCopy,
+  fastCopy
 };
 export const multiCopy = {
   symlinkCmdline,
   symlink,
-  getFcPath,
+  getFcPath
 };
 export const fileDelete = {getTrash, fileOperation, performSafeDel, updateWindow};
 export const processUndo = {undologRead, undologWrite, updatePairWindow};

@@ -1,18 +1,19 @@
 /* @file Cleanup trash items
- * @arg 0 {number} - If non-zero, do a test run
+ * @arg 0 {number} - If non-zero, cleanup PPXNNN.TMP directories
  */
 
 import fso from '@ppmdev/modules/filesystem.ts';
-import {nl, uselang, ppmin as ppm} from './mod/core.ts';
+import {tmp} from '@ppmdev/modules/data.ts';
 import {langCleanup} from './mod/language.ts';
-import {isEmptyStr} from '@ppmdev/modules/guard.ts';
 import {safeArgs} from '@ppmdev/modules/argument.ts';
+import {uselang, ppmin as ppm} from './mod/core.ts';
+import {ignoreValidTempDir} from './mod/core.ts';
 import debug from '@ppmdev/modules/debug.ts';
 
 const lang = langCleanup[uselang];
 
 const main = () => {
-  const [isTest] = safeArgs(false);
+  const [cleanPPxTmp] = safeArgs(false);
 
   const trashListPath = PPx.Extract("%sgu'ppmcache'\\list\\cleanup.txt");
 
@@ -22,60 +23,18 @@ const main = () => {
     return;
   }
 
-  const entries = PPx.Extract('%OC %*extract("%*insertSource(%sgu\'ppmcache\'\\list\\cleanup.txt)")').replace(/;/g, ',').split(',');
-  const errors: string[] = [];
-  let [delFile, delFolder]: boolean[] = [];
+  !ppm.question(lang.question) && PPx.Quit(-1);
 
-  if (!isTest) {
-    !ppm.question(lang.question) && PPx.Quit(-1);
+  const delOpts = ['-min', '-qstart', '-error:ignore', '-symdel:sym', '-undolog:off', '-nocount'].join(' ');
+  const path = `${tmp().dir}\\cleanup.txt`;
+  const entries = PPx.Extract('%OC %*extract("%*insertSource(%sgu\'ppmcache\'\\list\\cleanup.txt)")').replace(/,/g, ';');
+  PPx.Execute(`%Os *whereis -path:"${entries}" -dir:on -subdir:off -name -listfile:${path}`);
+  PPx.Execute(`%Os *ppcfile !delete -src:"@${path}" ${delOpts}`);
+
+  if (cleanPPxTmp) {
+    PPx.Execute(`%Os *whereis -path:%'temp' -mask1:"PPX*TMP" -mask2:"${ignoreValidTempDir()}" -dir:on -subdir:off -name -listfile:${path}`);
+    PPx.Execute(`*ppcfile !delete -src:"@${path}" ${delOpts}`);
   }
-
-  for (const entry of entries) {
-    if (isEmptyStr(entry)) {
-      continue;
-    }
-
-    if (isTest) {
-      ppm.echo(lang.test + nl + entries.join(nl));
-
-      return;
-    }
-
-    delFile = cleanupFiles(entry);
-    delFolder = cleanupFolders(entry);
-
-    if (!delFile && !delFolder) {
-      errors.push(entry);
-    }
-  }
-
-  errors.length === 0 ? PPx.linemessage(`!"${lang.complete}`) : `${lang.remaining}${nl}${nl}${errors.join(nl)}`;
-};
-
-const cleanupFiles = (filespec: string) => {
-  let isOkey = true;
-  debug.log('file', filespec);
-
-  try {
-    fso.DeleteFile(filespec, true);
-  } catch (err) {
-    isOkey = false;
-  }
-
-  return isOkey;
-};
-
-const cleanupFolders = (folderspec: string) => {
-  let isOkey = true;
-  debug.log('folder', folderspec);
-
-  try {
-    fso.DeleteFolder(folderspec, true);
-  } catch (err) {
-    isOkey = false;
-  }
-
-  return isOkey;
 };
 
 main();
