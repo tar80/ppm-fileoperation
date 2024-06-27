@@ -1,6 +1,6 @@
 {
   "name": "@ppmdev/ppm-fileoperation",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "general file operations",
   "main": "index.js",
   "directories": {

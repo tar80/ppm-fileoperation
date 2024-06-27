@@ -50,7 +50,6 @@ export const ppmin = {
 };
 
 const UNDOLOG_FILENAME = 'PPXUNDO.LOG';
-const UNDOLOG_FILEENCODE = 'utf16le';
 
 export const undologPath = (): string => {
   let logpath = PPx.Extract(`%*getcust(X_save)%\\${UNDOLOG_FILENAME}`);
@@ -66,13 +65,13 @@ export const undologPath = (): string => {
   return logpath;
 };
 
-export const undologRead = () => readLines({path: undologPath(), enc: UNDOLOG_FILEENCODE, linefeed: nl});
+export const undologRead = () => readLines({path: undologPath(), enc: info.encode, linefeed: nl});
 
 export const undologWrite = (data: string[]) => {
   const [error, errorMsg] = writeLines({
     path: undologPath(),
     data,
-    enc: UNDOLOG_FILEENCODE,
+    enc: info.encode,
     linefeed: nl,
     overwrite: true
   });

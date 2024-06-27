@@ -63,7 +63,7 @@ const extractPaths = (paths: string[]): Error_Data => {
     }
   }
 
-  const [error, msg] = writeLines({path: respFilePath, data: deletePaths, enc: 'utf16le', overwrite: true, linefeed: info.nlcode});
+  const [error, msg] = writeLines({path: respFilePath, data: deletePaths, enc: info.encode, overwrite: true, linefeed: info.nlcode});
 
   return error ? [true, msg] : [false, deletePaths];
 };
