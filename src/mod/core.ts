@@ -377,8 +377,8 @@ export const performSafeDel = (
 
   const dirName = PPx.Extract(`${destDir}\\%*now(data)`);
   !fso.FolderExists(dirName) && fso.CreateFolder(dirName);
-  const destPath = PPx.Extract(`%*name(DCUN,"${dirName}\\${filename}")`);
-  const displayLog: Record<string, string> = {message: PPx.Extract(`%*name(CN,"${destPath}")`)};
+  const destPath = PPx.Extract(`%*name(DCUN,"%(${dirName}\\${filename}%)")`);
+  const displayLog: Record<string, string> = {message: filename};
 
   try {
     if (debug.jestRun()) {
@@ -398,7 +398,7 @@ export const performSafeDel = (
     PPx.EntryState = 0;
   }
 
-  !!perlog && PPx.linemessage(`${displayLog.header}\t${displayLog.message}`);
+  !!perlog && PPx.linemessage(`${displayLog.header}\t%(${displayLog.message}%)`);
 
   return {success, skip, error, pass, undoData};
 };

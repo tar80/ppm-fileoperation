@@ -43,9 +43,7 @@ describe('parentDetails()', function () {
 
   //NOTE: send.dirtype always returns "NA"
   it('pairs window is not exist', () => {
-    execSync(
-      `${ppxdir}\\pptrayw.exe -c *string o,pair=%*extract(C,"%%~n")%:*if (""!="%so'pair'")%:*closeppx %so'pair'`
-    );
+    execSync(`${ppxdir}\\pptrayw.exe -c *string o,pair=%*extract(C,"%%~n")%:*if (""!="%so'pair'")%:*closeppx %so'pair'`);
     expect(moveFile.parentDetails(path1, path2)).toEqual({
       send: {dir: path1, dirtype: 'NA'},
       dest: {dir: path2, dirtype: 'NA'}
@@ -64,29 +62,29 @@ describe('switchMethod()', function () {
   it('use *ppcfile pattern', () => {
     const send = {dir: '', dirtype: ''};
     const dest = {dir: '', dirtype: ''};
-    expect(moveFile.switchMethod('0', send, dest)).toBe('0');
+    expect(moveFile.switchMethod(0, send, dest)).toBe(0);
   });
   it('use filesystem-move pattern', () => {
     const send = {dir: 'C:\\abc', dirtype: 'DIR'};
     const dest = {dir: 'C:\\def', dirtype: 'DIR'};
-    expect(moveFile.switchMethod('1', send, dest)).toBe('1');
+    expect(moveFile.switchMethod(1, send, dest)).toBe(1);
   });
   it('use filesystem-move and include virtual directory patterns', () => {
     let send = {dir: '', dirtype: 'DIR'};
     let dest = {dir: '', dirtype: 'LISTFILE'};
-    expect(moveFile.switchMethod('1', send, dest)).toBe('0');
+    expect(moveFile.switchMethod(1, send, dest)).toBe(0);
     send = {dir: '', dirtype: 'SPECIAL'};
     dest = {dir: '', dirtype: 'DIR'};
-    expect(moveFile.switchMethod('1', send, dest)).toBe('0');
+    expect(moveFile.switchMethod(1, send, dest)).toBe(0);
     send = {dir: '', dirtype: 'LISTFILE'};
     dest = {dir: '', dirtype: 'SPECIAL'};
-    expect(moveFile.switchMethod('1', send, dest)).toBe('0');
+    expect(moveFile.switchMethod(1, send, dest)).toBe(0);
   });
   it('use filesystem-move, destination drive is different', () => {
     const send = {dir: 'c:\\bin', dirtype: 'DIR'};
     const dest = {dir: 'D:\\bin', dirtype: 'DIR'};
     const isMove = true;
-    expect(moveFile.switchMethod('1', send, dest, isMove)).toBe('0');
+    expect(moveFile.switchMethod(1, send, dest, isMove)).toBe(0);
   });
 });
 
@@ -153,7 +151,7 @@ describe('performMove()', function () {
   const thisname = 'install';
 
   it('not exist path. the pass count must be incremental', () => {
-    const perlog = '0';
+    const perlog = false;
     const sendDir = 'C:\\test';
     const filename = 'dummy.txt';
     const destDir = 'D:\\not\\exist\\path';
@@ -162,7 +160,7 @@ describe('performMove()', function () {
     expect(performMove(perlog, sendDir, filename, destDir, count)).toEqual(result);
   });
   it('duplicate path. the skip count must be incremental', () => {
-    const perlog = '0';
+    const perlog = false;
     const sendDir = thispath;
     const filename = thisname;
     const destDir = thispath;
@@ -171,7 +169,7 @@ describe('performMove()', function () {
     expect(performMove(perlog, sendDir, filename, destDir, count)).toEqual(result);
   });
   it('failed to move. the errror count must be incremental', () => {
-    const perlog = '0';
+    const perlog = false;
     const sendDir = thispath;
     const filename = thisname;
     const destDir = 'C:\\Users';
@@ -180,7 +178,7 @@ describe('performMove()', function () {
     expect(performMove(perlog, sendDir, filename, destDir, count)).toEqual(result);
   });
   it('successful move. the success count must be incremental', () => {
-    const perlog = '0';
+    const perlog = false;
     const sendDir = thispath;
     const filename = thisname;
     const destDir = 'C:\\Users';
