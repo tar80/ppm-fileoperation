@@ -1,7 +1,7 @@
 ﻿PPM_PLUGIN_NAME=ppm-fileoperation
 
 #Plugin version
-VERSION=1.9.2
+VERSION=1.9.3
 
 #Requires ppm version
 PPM_VERSION=0.95
