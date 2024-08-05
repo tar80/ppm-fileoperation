@@ -16,7 +16,7 @@ import debug from '@ppmdev/modules/debug.ts';
 
 type CopyProc = 'Copy' | 'FastCopy' | 'Link';
 
-const LIST_NAME = '%sgu"ppmcache"\\list\\multipath.txt';
+const LIST_NAME = '%sgu"ppmcache"\\complist\\multipath.txt';
 const lang = langMultiCopy[uselang];
 
 const main = () => {
@@ -34,8 +34,8 @@ const main = () => {
     `'title':'Multiple ${procName} / ${lang.subTitle}',` +
     "'mode':'h'," +
     "'leavecancel':true," +
-    "'list':false," +
-    "'module':false," +
+    "'list':'off'," +
+    "'module':'off'," +
     "'detail':'1user1 path'," +
     `'file':'${LIST_NAME}'`;
   const data = PPx.Extract(`%*script("%sgu'ppmlib'\\input.js","{${inputOpts}}")`);

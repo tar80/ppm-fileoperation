@@ -12,7 +12,7 @@ import {langMultiCopy} from './mod/language.ts';
 import {nl, uselang, ppmin as ppm} from './mod/core.ts';
 import debug from '@ppmdev/modules/debug.ts';
 
-const LIST_NAME = '%sgu"ppmcache"\\list\\multipath.txt';
+const LIST_NAME = '%sgu"ppmcache"\\complist\\multipath.txt';
 const DEFAULT_OPTS = '-min -log:off -undolog:off -querycreatedirectory:off -checkexistfirst -nocount -symdel:sym';
 const respFilePath = tmp().file;
 const lang = langMultiCopy[uselang];
@@ -25,8 +25,8 @@ const main = () => {
     `'title':'Multiple Delete / ${lang.subTitle}',` +
     "'mode':'h'," +
     "'leavecancel':true," +
-    "'list':false," +
-    "'module':false," +
+    "'list':'off'," +
+    "'module':'off'," +
     "'detail':'1user1 path'," +
     `'file':'${LIST_NAME}'`;
   const input = PPx.Extract(`%*script("%sgu'ppmlib'\\input.js","{${inputOpts}}")`);
