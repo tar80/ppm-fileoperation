@@ -24,10 +24,10 @@ const main = () => {
   const inputOpts =
     `'title':'Multiple Delete / ${lang.subTitle}',` +
     "'mode':'h'," +
-    "'leavecancel':true," +
     "'list':'off'," +
     "'module':'off'," +
     "'detail':'1user1 path'," +
+    "'leavecancel':false," +
     `'file':'${LIST_NAME}'`;
   const input = PPx.Extract(`%*script("%sgu'ppmlib'\\input.js","{${inputOpts}}")`);
 

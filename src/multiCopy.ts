@@ -33,10 +33,10 @@ const main = () => {
   const inputOpts =
     `'title':'Multiple ${procName} / ${lang.subTitle}',` +
     "'mode':'h'," +
-    "'leavecancel':true," +
     "'list':'off'," +
     "'module':'off'," +
     "'detail':'1user1 path'," +
+    "'leavecancel':false," +
     `'file':'${LIST_NAME}'`;
   const data = PPx.Extract(`%*script("%sgu'ppmlib'\\input.js","{${inputOpts}}")`);
 
