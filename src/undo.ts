@@ -1,12 +1,13 @@
 /* @file Undo/Redo
  */
 
-import type {Error_String} from '@ppmdev/modules/types.ts';
-import fso from '@ppmdev/modules/filesystem.ts';
 import {info} from '@ppmdev/modules/data.ts';
-import {uselang, ppmin as ppm, processUndo as core} from './mod/core.ts';
-import {langUndo} from './mod/language.ts';
 import debug from '@ppmdev/modules/debug.ts';
+import fso from '@ppmdev/modules/filesystem.ts';
+import {isEmptyStr} from '@ppmdev/modules/guard.ts';
+import type {Error_String} from '@ppmdev/modules/types.ts';
+import {processUndo as core, ppmin as ppm, uselang} from './mod/core.ts';
+import {langUndo} from './mod/language.ts';
 
 const lang = langUndo[uselang];
 
@@ -19,7 +20,7 @@ const main = (): void => {
   }
 
   if (ppm.extract('C', '%%2')[1] !== '') {
-    core.updatePairWindow();
+    core.updatePairedWindow();
   }
 };
 
@@ -34,22 +35,27 @@ const undo = (): Error_String => {
     return [true, lang.noHistory];
   }
 
-  const resultLog = ['[Undo]'];
+  const resultLog = ['[INFO] Undo'];
   const errorMsg = [lang.errorDetected, ''];
   let hasProc = false;
   let n = 0;
 
   do {
     const line = data.lines[n];
+
+    if (isEmptyStr(line)) {
+      continue;
+    }
+
     const [header, first] = line.split('\t');
-    n++
+    n++;
 
     if (header === 'Skip' || header === 'MakeDir') {
       continue;
     }
 
     const second = data.lines[n].split('\t')[1];
-    n++
+    n++;
 
     switch (header) {
       case 'MoveError':
@@ -109,8 +115,13 @@ const overwrite = (proc: 'skip' | 'redo'): void => {
 
   while (data.lines[n]) {
     const line = data.lines[n];
+
+    if (isEmptyStr(line)) {
+      continue;
+    }
+
     const [header, first] = line.split('\t');
-    n++
+    n++;
 
     if (header === 'Skip') {
       continue;
@@ -131,7 +142,7 @@ const overwrite = (proc: 'skip' | 'redo'): void => {
       redo: {send: second, dest: first}
     }[proc];
     newLog.push(`Move\t${path.send}${info.nlcode} ->\t${path.dest}`);
-    n++
+    n++;
   }
 
   // Write out the replacement result and overwrite it with utf16le

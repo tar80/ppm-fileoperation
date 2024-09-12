@@ -1,7 +1,7 @@
 import PPx from '@ppmdev/modules/ppx.ts';
 global.PPx = Object.create(PPx);
 import {nl, undologPath, renameSwap, pairsExtract, moveFile, performMove, resultMsg, datetime} from '../core.ts';
-import {execSync} from 'child_process';
+import {execSync} from 'node:child_process';
 
 describe('undologPath()', function () {
   it('check the path of undolog', () => {

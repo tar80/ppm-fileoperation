@@ -463,7 +463,7 @@ export const resultMsg = (cmd: string, total: number, {success, skip, error, pas
 
 const updateWindow = (reload: boolean) =>
   reload ? PPx.Execute('*execute C,%%K"@F5"') : PPx.Execute('*execute C,*unmarkentry path:%%:%%K"@^F5"');
-const updatePairWindow = () => PPx.Execute('*ifmatch C*,%~n%:%K~"@^F5"');
+const updatePairedWindow = () => PPx.Execute('*ifmatch C*,%~n%:%K~"@^F5"');
 
 export const renameSwap = {entryDetails, checkExistence, createUniqName};
 export const moveFile = {
@@ -475,7 +475,7 @@ export const moveFile = {
   fileOperation,
   performMove,
   updateWindow,
-  updatePairWindow
+  updatePairedWindow
 };
 export const copyFile = {
   parentDetails,
@@ -483,7 +483,7 @@ export const copyFile = {
   switchMethod,
   ppcfile,
   expandFiles,
-  updatePairWindow,
+  updatePairedWindow,
   symlinkCmdline,
   symlink,
   fastCopy
@@ -494,4 +494,4 @@ export const multiCopy = {
   getFcPath
 };
 export const fileDelete = {getTrash, fileOperation, performSafeDel, updateWindow};
-export const processUndo = {undologRead, undologWrite, updatePairWindow};
+export const processUndo = {undologRead, undologWrite, updatePairedWindow};

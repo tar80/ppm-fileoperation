@@ -1,9 +1,9 @@
 /* @file Swap filenames
  *
  * NOTE:
- *  - If the number of marks is two, the name is swapped between two files.
- *  - If the number of marks is less than two, swap with the cursor position file name in the opposite window.
- *  - If the files have the same name, the file extension is swapped.
+ *  - If there are two marks, the filenames are swapped between the two files.
+ *  - If the number of marks is less than two, swap with the cursor position file name in the paired window.
+ *  - If the files have the same name, the file extensions are swapped.
  *  - Name swapping between file and directory is not supported.
  */
 

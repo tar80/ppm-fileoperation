@@ -40,7 +40,7 @@ const main = (): void => {
 
     if (ok) {
       core.updateWindow(reload);
-      !moveUpper && core.updatePairWindow();
+      !moveUpper && core.updatePairedWindow();
     }
   }
 };
