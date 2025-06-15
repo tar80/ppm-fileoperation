@@ -50,6 +50,10 @@ const undo = (): Error_String => {
     const [header, first] = line.split('\t');
     n++;
 
+    if (header === ' stat') {
+      break;
+    }
+    
     if (header === 'Skip' || header === 'MakeDir') {
       continue;
     }
@@ -123,6 +127,10 @@ const overwrite = (proc: 'skip' | 'redo'): void => {
     const [header, first] = line.split('\t');
     n++;
 
+    if (header === ' stat') {
+      break;
+    }
+    
     if (header === 'Skip') {
       continue;
     }
